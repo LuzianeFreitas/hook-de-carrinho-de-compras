@@ -23,11 +23,12 @@ const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
   const [cart, setCart] = useState<Product[]>(() => {
-    // const storagedCart = Buscar dados do localStorage
 
-    // if (storagedCart) {
-    //   return JSON.parse(storagedCart);
-    // }
+    const storagedCart = localStorage.getItem('@RocketShoes:cart');
+
+    if (storagedCart) {
+      return JSON.parse(storagedCart);
+    }
 
     return [];
   });
@@ -35,16 +36,48 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
   const addProduct = async (productId: number) => {
     try {
       // TODO
+      const addProductCart = [...cart];
+      const productExist = addProductCart.find(product => product.id === productId);
+
+      const productStock = await api.get(`/stock/${productId}`);
+      const stockAmount = productStock.data.amount;
+
+      const currentAmount = productExist ? productExist.amount : 0;
+
+      const amount = currentAmount + 1;
+
+      if(amount > stockAmount) {
+        toast.error('Quantidade solicitada fora de estoque');
+        return;
+      }
+
+      if(productExist) {
+        productExist.amount = amount;
+      } else {
+        const product = await api.get(`/products/${productId}`);
+
+        // primeira vez criando um produto é preciso adicionar um amount
+        const newProduct = {
+          ...product.data,
+          amount: 1,
+        }
+
+        addProductCart.push(newProduct);
+      }
+
+      setCart(addProductCart);
+      localStorage.setItem('@RocketShoes:cart', JSON.stringify(addProductCart));
     } catch {
       // TODO
+      toast.error('Erro na adição do produto');
     }
   };
 
   const removeProduct = (productId: number) => {
     try {
-      // TODO
+      
     } catch {
-      // TODO
+      
     }
   };
 
@@ -53,9 +86,9 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     amount,
   }: UpdateProductAmount) => {
     try {
-      // TODO
+      
     } catch {
-      // TODO
+      
     }
   };
 
