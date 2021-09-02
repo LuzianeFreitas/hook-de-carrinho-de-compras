@@ -5,8 +5,8 @@ Essa será uma aplicação onde o objetivo principal é criar um hook de carr
 
 - [x] Listagem dos produtos na home;
 - [x] Adicionar um novo produto ao carrinho;
-- [ ] Remover um produto do carrinho;
-- [ ] Alterar a quantidade de um produto no carrinho;
-- [ ] Cálculo dos preços sub-total e total do carrinho;
-- [ ] Validação de estoque;
-- [ ] Exibição de mensagens de erro;
+- [x] Remover um produto do carrinho;
+- [x] Alterar a quantidade de um produto no carrinho;
+- [x] Cálculo dos preços sub-total e total do carrinho;
+- [x] Validação de estoque;
+- [x] Exibição de mensagens de erro;
